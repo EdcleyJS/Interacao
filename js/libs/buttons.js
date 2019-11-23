@@ -377,9 +377,6 @@ $(document).ready(function () {
 			}else{
 			   	var formName=$(this).parent().parent()[0].id;
 			   	opcoes=[];
-			   	if($(this).parent().parent().hasClass('was-validated')){
-					$(this).parent().parent()[0].classList.remove("was-validated");
-				}
 			   	/*if(formName=='Form'){
 			   		stepper1.next();
 			   		var id= $(this).parent().next().find('div >div > div> input')[0].id;
@@ -392,7 +389,7 @@ $(document).ready(function () {
 			    	inicio(dataset);
 			   	}else */if(formName=='2Form'){
 			   		stepper2.next();
-
+			   		$(this).parent().parent().removeClass("was-validated");
 					
 			   		var id= $(this).parent().next().find('div >div > div> ').siblings()[0].id;
 			   		var base=id.substring(3,4);

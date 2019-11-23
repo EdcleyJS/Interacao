@@ -1,4 +1,4 @@
-var filterbymouth,filterbytri,alpha=0,left=80,right=400,leftTaxi=22000,rightTaxi=36000,database,interOn,mesSelecionado,anoSelecionado,diaSelecionado,trimestreSelecionado,opcoes=[],GeoLayer,LayerRange,layerTuto1,layerTuto2,layerTuto3,layerTuto4,LayerTaxi,dataset,max,featurename,selecionados=[],medias=[],hops=true;
+var filterbymouth,filterbytri,alpha=0,left=80,right=400,leftTaxi=22000,rightTaxi=36000,database,interOn,mesSelecionado,anoSelecionado,diaSelecionado,trimestreSelecionado,opcoes=[],GeoLayer,LayerRange,layerTuto1,layerTuto2,layerTuto3,layerTuto4,LayerTaxi,dataset,max,featurename,selecionados=[],selecionadosC=[],selecionadosT=[],medias=[],hops=true;
 //var map = L.map('vis6').setView([-8.305448,-37.822426], 8);
 var mapRange = L.map('vis2',{ zoomControl: false }).setView([-8.305448,-37.822426], 8);
 //var mapVis01 = L.map('vis01').setView([-8.305448,-37.822426], 8);
@@ -267,6 +267,9 @@ function inicioRange(dataset){
         var probArea= new distribuicaoIntervalo(getDis(feature.properties.name),left,right);
         var prob= probArea.cdfintervalo().toFixed(2);
         layer.bindPopup(""+feature.properties.name+": "+Math.floor(prob*100)+"%");
+        layer.on({
+          dblclick: whenClickedC
+        });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
             this.openPopup();
@@ -274,6 +277,13 @@ function inicioRange(dataset){
         layer.on('mouseout', function (e) {
             LayerRange.resetStyle(e.target);
             this.closePopup();
+            if(selecionadosC.filter(function(el) { return el.target.feature.properties.name === e.target.feature.properties.name; }).length>0){
+              layer.setStyle({
+                  weight: 3.5,
+                  color: 'black',
+                  fillOpacity: 0.9
+              });
+            }
         });
       }
     }).addTo(mapRange);
@@ -312,7 +322,7 @@ legendVis02.onAdd = function (map) {
   return div;
 };
 legendVis02.addTo(mapVis02);
-
+var cmpOn=false;
 //-- FUNÇÃO QUE DESENHA E CONTROLA AS AREAS NO MAPA --
 function Vis02TutorialFunction(dataset,interOn){
   if(layerTuto2!= null){
@@ -349,7 +359,7 @@ function Vis02TutorialFunction(dataset,interOn){
             };            
           }
         }else{
-            return {
+              return {
                 weight: 0.5,
                 opacity: 1,
                 fillColor: "#"+colorR(prob),
@@ -368,6 +378,9 @@ function Vis02TutorialFunction(dataset,interOn){
         }
         //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
         layer.bindPopup(""+feature.properties.name+": "+Math.floor(prob*100)+"%");
+        layer.on({
+          dblclick: whenClicked
+        });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
             this.openPopup();
@@ -375,6 +388,14 @@ function Vis02TutorialFunction(dataset,interOn){
         layer.on('mouseout', function (e) {
             layerTuto2.resetStyle(e.target);
             this.closePopup();
+            //console.log(e);
+            if(selecionados.filter(function(el) { return el.target.feature.properties.name === e.target.feature.properties.name; }).length>0){
+              layer.setStyle({
+                  weight: 3.5,
+                  color: 'black',
+                  fillOpacity: 0.9
+              });
+            }
         });
       }
   }).addTo(mapVis02);;
@@ -457,6 +478,9 @@ function inicioTaxi(dataset){
         var probArea= new distribuicaoIntervalo(distribuicaoNYC(feature.properties.OBJECTID),leftTaxi,rightTaxi);
         var prob= probArea.cdfintervalo().toFixed(2);
         layer.bindPopup(""+feature.properties.zone+": "+Math.floor(prob*100)+"%");
+        layer.on({
+          dblclick: whenClickedT
+        });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
             this.openPopup();
@@ -464,6 +488,13 @@ function inicioTaxi(dataset){
         layer.on('mouseout', function (e) {
             LayerTaxi.resetStyle(e.target);
             this.closePopup();
+            if(selecionadosT.filter(function(el) { return el.target.feature.properties.OBJECTID === e.target.feature.properties.OBJECTID; }).length>0){
+              layer.setStyle({
+                  weight: 3.5,
+                  color: 'black',
+                  fillOpacity: 0.9
+              });
+            }
         });
       }
     }).addTo(mapVistaxi);
@@ -472,3 +503,4 @@ function inicioTaxi(dataset){
   };
   infoTaxi.addTo(mapVistaxi);
 }
+
