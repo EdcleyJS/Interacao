@@ -657,7 +657,7 @@ function geraperguntas(perguntas,index,vis){
   var nQ=pergunta.id;
   if (nQ!='004C'&&nQ!='011C'&&nQ!='012C'&&nQ!='017T'&&nQ!='024T'&&nQ!='025T') {
       var div1 = document.createElement("div");
-      div1.setAttribute('class','col-sm-4 col-md-4 col-lg-4 col-xl-4');
+      div1.setAttribute('class','col-sm-3 col-md-3 col-lg-3 col-xl-3');
 
       var input1= document.createElement("input");
       input1.setAttribute('type','hidden');
@@ -747,7 +747,7 @@ function geraperguntas(perguntas,index,vis){
   }else{
     for (var i = 0; i < pergunta.op.length; i++) {
       var div1 = document.createElement("div");
-      div1.setAttribute('class',"form-group col-md-4");
+      div1.setAttribute('class',"form-group col-sm-3 col-md-3 col-lg-3 col-xl-3");
       var input1= document.createElement("input");
       input1.setAttribute('type','hidden');
       input1.setAttribute('class','clicks');
@@ -1036,7 +1036,110 @@ function compare(dataset){
           }else{
             var total=1-probab;
           }
-        layer.bindPopup(""+feature.properties.name+": "+Math.floor(total*100).toFixed(2)+"%");
+        layer.bindPopup(""+feature.properties.name+": "+Math.round(total*100)+"%");
+        layer.on({
+          dblclick: whenClicked
+        });
+        layer.on('mouseover', function (e) {
+            highlightFeature(e);
+            this.openPopup();
+        });
+        layer.on('mouseout', function (e) {
+            layerTuto2.resetStyle(e.target);
+            this.closePopup();
+        });
+      }
+  }).addTo(mapVis02);
+  infoVis02.update = function (props) {
+      this._div.innerHTML= infoprops(props);
+  };
+  infoVis02.addTo(mapVis02);
+}
+function compareTodos(newdata,dataset){
+  infoVis02.remove();
+  if(layerTuto2!= null){
+      layerTuto2.clearLayers();
+  }
+  layerTuto2 =L.geoJson(dataset,
+    {style: function(feature){
+        var probab= cmp(getDis(newdata[0].properties.name),getDis(feature.properties.name));
+        if(newdata[0].properties.name==feature.properties.name){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
+        if(opcoes.includes(feature.properties.name)){
+          if(opcoes[0]==feature.properties.name){
+            if(newdata[0].properties.name==feature.properties.name){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#c51b7d'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#c51b7d'
+              };            
+            }
+          }else if(opcoes[1]==feature.properties.name){
+            if(newdata[0].properties.name==feature.properties.name){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#053061'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#053061'
+              };            
+            }           
+          }
+        }else{
+          if(newdata[0].properties.name==feature.properties.name){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "black",
+              dashArray: '3',
+              fillOpacity: 1.0,
+              color: 'black'
+            };
+          }else{
+            return {
+              weight: 0.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: 'black'
+            };            
+          }
+        }
+    },
+      onEachFeature: function (feature,layer) {
+        //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
+        var probab= cmp(getDis(newdata[0].properties.name),getDis(feature.properties.name));
+          if(newdata[0].properties.name==feature.properties.name){
+            var total=probab;
+          }else{
+            var total=1-probab;
+          }
+        layer.bindPopup(""+feature.properties.name+": "+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClicked
         });
@@ -1135,7 +1238,110 @@ function compareC(dataset){
           }else{
             var total=1-probab;
           }
-        layer.bindPopup(""+feature.properties.name+": "+Math.floor(total*100).toFixed(2)+"%");
+        layer.bindPopup(""+feature.properties.name+": "+Math.round(total*100)+"%");
+        layer.on({
+          dblclick: whenClickedC
+        });
+        layer.on('mouseover', function (e) {
+            highlightFeature(e);
+            this.openPopup();
+        });
+        layer.on('mouseout', function (e) {
+            LayerRange.resetStyle(e.target);
+            this.closePopup();
+        });
+      }
+  }).addTo(mapRange);
+  infoRange.update = function (props) {
+    this._div.innerHTML= infoprops(props);
+  };
+  infoRange.addTo(mapRange);
+}
+function compareTodosC(newdata,dataset){
+  infoRange.remove();
+  if(LayerRange!= null){
+      LayerRange.clearLayers();
+  }
+  LayerRange =L.geoJson(dataset,
+    {style: function(feature){
+        var probab= cmp(getDis(newdata[0].properties.name),getDis(feature.properties.name));
+        if(newdata[0].properties.name==feature.properties.name){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
+        if(opcoes.includes(feature.properties.name)){
+          if(opcoes[0]==feature.properties.name){
+            if(newdata[0].properties.name==feature.properties.name){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#c51b7d'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#c51b7d'
+              };            
+            }
+          }else if(opcoes[1]==feature.properties.name){
+            if(newdata[0].properties.name==feature.properties.name){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#053061'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#053061'
+              };            
+            }           
+          }
+        }else{
+          if(newdata[0].properties.name==feature.properties.name){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "black",
+              dashArray: '3',
+              fillOpacity: 1.0,
+              color: 'black'
+            };
+          }else{
+            return {
+              weight: 0.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: 'black'
+            };            
+          }
+        }
+    },
+      onEachFeature: function (feature,layer) {
+        //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
+        var probab= cmp(getDis(newdata[0].properties.name),getDis(feature.properties.name));
+        if(newdata[0].properties.name==feature.properties.name){
+          var total=probab;
+        }else{
+          var total=1-probab;
+        }
+        layer.bindPopup(""+feature.properties.name+": "+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClickedC
         });
@@ -1234,7 +1440,110 @@ function compareT(dataset){
           }else{
             var total=1-probab;
           }
-        layer.bindPopup(""+feature.properties.zone+": "+Math.floor(total*100).toFixed(2)+"%");
+        layer.bindPopup(""+feature.properties.zone+": "+Math.round(total*100)+"%");
+        layer.on({
+          dblclick: whenClickedT
+        });
+        layer.on('mouseover', function (e) {
+            highlightFeature(e);
+            this.openPopup();
+        });
+        layer.on('mouseout', function (e) {
+            LayerTaxi.resetStyle(e.target);
+            this.closePopup();
+        });
+      }
+  }).addTo(mapVistaxi);
+  infoTaxi.update = function (props) {
+    this._div.innerHTML= infopropsTaxi(props);
+  };
+  infoTaxi.addTo(mapVistaxi);
+}
+function compareTodosT(newdata,dataset){
+  infoTaxi.remove();
+  if(LayerTaxi!= null){
+      LayerTaxi.clearLayers();
+  }
+  LayerTaxi =L.geoJson(dataset,
+    {style: function(feature){
+      var probab= cmp(distribuicaoNYC(newdata[0].properties.OBJECTID),distribuicaoNYC(feature.properties.OBJECTID));
+        if(newdata[0].properties.OBJECTID==feature.properties.OBJECTID){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
+        if(opcoes.includes(feature.properties.OBJECTID)){
+          if(opcoes[0]==feature.properties.OBJECTID){
+            if(newdata[0].properties.OBJECTID==feature.properties.OBJECTID){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#c51b7d'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#c51b7d'
+              };            
+            }
+          }else if(opcoes[1]==feature.properties.OBJECTID){
+            if(newdata[0].properties.OBJECTID==feature.properties.OBJECTID){
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "black",
+                dashArray: '3',
+                fillOpacity: 1.0,
+                color: '#053061'
+              };
+            }else{
+              return {
+                weight: 3.5,
+                opacity: 1,
+                fillColor: "#"+colorR(probab),
+                dashArray: '3',
+                fillOpacity: 0.9,
+                color: '#053061'
+              };            
+            }      
+          }
+        }else{
+          if(newdata[0].properties.OBJECTID==feature.properties.OBJECTID){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "black",
+              dashArray: '3',
+              fillOpacity: 1.0,
+              color: 'black'
+            };
+          }else{
+            return {
+              weight: 0.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: 'black'
+            };            
+          }
+        }
+    },
+      onEachFeature: function (feature,layer) {
+        //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
+      var probab= cmp(distribuicaoNYC(newdata[0].properties.OBJECTID),distribuicaoNYC(feature.properties.OBJECTID));
+        if(newdata[0].properties.OBJECTID==feature.properties.OBJECTID){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
+        layer.bindPopup(""+feature.properties.zone+": "+Math.round(probab*100)+"%");
         layer.on({
           dblclick: whenClickedT
         });
@@ -1268,15 +1577,22 @@ function comparando(e){
         layer.bringToFront();
       }
       selecionados.push(e);
-      if(selecionados.length==2){
+      /*if(selecionados.length==2){
         layerTuto2.clearLayers();
         var newdata=[];
         selecionados.forEach(function(d,i){
           newdata.push(d.target.feature);
         });
         compare(newdata);
+      }else */if(selecionados.length==1){
+        layerTuto2.clearLayers();
+        var newdata=[];
+        selecionados.forEach(function(d,i){
+          newdata.push(d.target.feature);
+        });
+        compareTodos(newdata,dataset);
       }
-    }else if(exists==true && selecionados.length<=2){
+    }else if(exists==true && selecionados.length>0){
       selecionados=[];
       $('#slidert').removeClass("disabledslider");
       Vis02TutorialFunction(dataset,true);
@@ -1300,15 +1616,22 @@ function comparandoC(e){
         layer.bringToFront();
       }
       selecionadosC.push(e);
-      if(selecionadosC.length==2){
+      /*if(selecionadosC.length==2){
         LayerRange.clearLayers();
         var newdata=[];
         selecionadosC.forEach(function(d,i){
           newdata.push(d.target.feature);
         });
         compareC(newdata);
+      }else */if(selecionadosC.length==1){
+        LayerRange.clearLayers();
+        var newdata=[];
+        selecionadosC.forEach(function(d,i){
+          newdata.push(d.target.feature);
+        });
+        compareTodosC(newdata,dataset);
       }
-    }else if(exists==true && selecionadosC.length<=2){
+    }else if(exists==true && selecionadosC.length>0){
       selecionadosC=[];
       $('#sliderc').removeClass("disabledslider");
       inicioRange(dataset);
@@ -1332,15 +1655,22 @@ function comparandoT(e){
         layer.bringToFront();
       }
       selecionadosT.push(e);
-      if(selecionadosT.length==2){
+      /*if(selecionadosT.length==2){
         LayerTaxi.clearLayers();
         var newdata=[];
         selecionadosT.forEach(function(d,i){
           newdata.push(d.target.feature);
         });
         compareT(newdata);
+      }else */if(selecionadosT.length==1){
+        LayerTaxi.clearLayers();
+        var newdata=[];
+        selecionadosT.forEach(function(d,i){
+          newdata.push(d.target.feature);
+        });
+        compareTodosT(newdata,datasettaxi);
       }
-    }else if(exists==true && selecionadosT.length<=2){
+    }else if(exists==true && selecionadosT.length>0){
       selecionadosT=[];
       $('#slidertx').removeClass("disabledslider");
       inicioTaxi(datasettaxi);
