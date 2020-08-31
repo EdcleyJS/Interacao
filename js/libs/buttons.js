@@ -1,149 +1,77 @@
-var arr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],clicks=0,d1 = new Date(),stepper1,stepper2,stepper3,stepper4,d4,list,d2,diff,post_url,request_method,form_data,forms;
+var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],clicks=0,d1 = new Date(),stepper1,stepper2,stepper3,stepper4,d4,list,d2,diff,post_url,request_method,form_data,forms;
 var novodataset;
 var tempoinicial=new Date(),tempofinal,tempotutorial,duracaoPerguntas,duracaotutorial,duracao;
+var selecionados_Perguntas=[],selecionados_distance_near=[],selecionados_size_large=[],selecionados_size_small=[],selecionados_variance_small=[],selecionados_variance_large=[];
+function buildSlider() {
+    // ATUALIZA OS VALORES DO MAPA DE PROB COM INTERVALO QUANDO O SLIDER MUDA NA ETAPA DO TUTORIAL.
+    let myMin = math.floor(menor);
+    let myMax = math.ceil(maior);
+
+    left=0.2*myMax;
+    right=0.8*myMax;
+    
+	$("#Vis02Tuto").ionRangeSlider({
+		type: "double",
+	    min: myMin,
+            max: myMax,
+            from: 0.2*myMax,
+            to: 0.8*myMax,
+        step: 1,
+        drag_interval: true,
+        skin: "big",
+        grid: true,
+        onChange: function (data) {
+        	opcoes=[];
+        	//opcoes=['Recife','Caruaru'];
+            left=data.from;
+            right=data.to;
+            Vis02TutorialFunction();
+            bring_front(mapVis02);
+
+        }
+	});
+	$("#slider_Perguntas").ionRangeSlider({
+		type: "double",
+	    min: myMin,
+            max: myMax,
+            from: 0.2*myMax,
+            to: 0.8*myMax,
+        step: 1,
+        drag_interval: true,
+        skin: "big",
+        grid: true,
+        onChange: function (data) {
+            left=data.from;
+            right=data.to;
+            VisPerguntas();
+            bring_front(mapVisPerguntas);
+            mapVisPerguntas.invalidateSize();
+        }
+	});
+}
+function updateSliderPerguntas(){
+	let myMin = math.floor(menor);
+    let myMax = math.ceil(maior);
+    left=0.2*myMax;
+    right=0.8*myMax;
+    var instance=$("#slider_Perguntas").data("ionRangeSlider");
+    if(instance){
+    	instance.update({
+		   min: myMin, max:myMax,from:left,to:right
+		});
+    }
+}
 d3.json("./data/perguntas.json",function(error,data){
 	novodataset=data;
 });
+
 $(document).ready(function () {
 	//PREENCHE TODAS AS PERGUNTAS.
-	arr=shuffle(arr);
+	//arr=shuffle(arr);
 	arr.forEach(function(d,i){
-		switch(i) {
-		  	case 0:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("21p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		  	case 1:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("22p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		  	case 2:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("23p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 3:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("24p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 4:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("25p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 5:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("26p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 6:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("27p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 7:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("28p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 8:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("29p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 9:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("30p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 10:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("31p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 11:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("32p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 12:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("33p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 13:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("34p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 14:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("35p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;	
-		    case 15:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("36p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 16:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("37p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 17:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("38p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 18:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("39p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 19:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("40p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 20:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("41p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 21:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("42p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 22:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("43p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 23:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("44p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 24:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("45p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;
-		    case 25:
-		  		d4= geraperguntas(novodataset,d,3);
-		  		list = document.getElementById("46p");
-				list.insertBefore(d4, list.childNodes[0]);
-		    break;		    		    		    		    	    		    
-		  default:
-		}
-	});
-	arr.forEach(function(d,i){
-	    arr[i]=d+1;
+		d4= geraperguntas(novodataset,d,3);
+		list = document.getElementById((i+1)+"p");
+		list.insertBefore(d4, list.childNodes[0]);
 	});
 	$('#pills-tab >li >a')[0].click();
 	$('#pills-tab >li')[1].classList.add('disabled');
@@ -157,7 +85,8 @@ $(document).ready(function () {
 		}else{
 			$('.alert').removeClass("show");
 	    	$('#header').css('display','none');
-	    	$('#tutorial').css('display','');		
+	    	$('#tutorial').css('display','');
+	    	Start_Update_data();
 		}
     });
 	// CONTA OS CLICKS PARA DEPOIS ENVIAR COM OS FORMULÁRIOS.
@@ -168,7 +97,6 @@ $(document).ready(function () {
     $(".custom-control-input").click(function() {
     	clicks-=1;
     });
-    // FUNÇÃO PARA GARANTIR QUE O VALOR ESCOLHIDO NO SLIDER SEJA COLOCADO NO INPUT CORRETO DO FORM.
     $(".ioRangerSlider").ionRangeSlider({
 		min: 1,
         max: 5,
@@ -178,117 +106,15 @@ $(document).ready(function () {
         	$('#'+data.input[0].id).value=data.input[0].value; 
         }
 	});
-    // ATUALIZA OS VALORES DO MAPA DE PROB COM ALPHA QUANDO O SLIDER MUDA NA ETAPA DE PERGUNTAS.
-	$("#example_id").ionRangeSlider({
-		min: 0,
-        max: 300,
-        skin: "big",
-        grid: true,
-        onChange: function (data) {
-            alpha=data.from;
-            inicio(dataset);
-        }
-	});
-	// ATUALIZA OS VALORES DO MAPA DE PROB COM INTERVALO QUANDO O SLIDER MUDA NA ETAPA DE PERGUNTAS.
-	$("#sliderrange2").ionRangeSlider({
-		type: "double",
-		min: 0,
-        max: 842,
-        from: 80,
-        to: 400,
-        step: 10,
-        drag_interval: true,
-        skin: "big",
-        grid: true,
-        onChange: function (data) {
-        	interOn=true;
-            left=data.from;
-            right=data.to;
-            inicioRange(dataset);
-            interOn=false;
-        }
-	});
-	$("#sliderrangetaxi").ionRangeSlider({
-		type: "double",
-		min: 0,
-        max: 54470,
-        from: 22000,
-        to: 36000,
-        step: 100,
-        drag_interval: true,
-        skin: "big",
-        grid: true,
-        onChange: function (data) {
-        	interOn=true;
-            leftTaxi=data.from;
-            rightTaxi=data.to;
-            inicioTaxi(dataset);
-            interOn=false;
-        }
-	});
-	// ATUALIZA OS VALORES DO MAPA DE PROB COM ALPHA QUANDO O SLIDER MUDA NA ETAPA DO TUTORIAL.
-	$("#Vis01Tuto").ionRangeSlider({
-		min: 0,
-        max: 300,
-        skin: "big",
-        grid: true,
-        onChange: function (data) {
-        	opcoes=[];
-        	//opcoes=['Recife','Caruaru'];
-            alpha=data.from;
-            Vis01TutorialFunction(dataset,false);
-        }
-	});
-	// ATUALIZA OS VALORES DO MAPA DE PROB COM INTERVALO QUANDO O SLIDER MUDA NA ETAPA DO TUTORIAL.
-	$("#Vis02Tuto").ionRangeSlider({
-		type: "double",
-		min: 0,
-        max: 842,
-        from: 80,
-        to: 400,
-        step: 10,
-        drag_interval: true,
-        skin: "big",
-        grid: true,
-        onChange: function (data) {
-        	opcoes=[];
-        	//opcoes=['Recife','Caruaru'];
-            left=data.from;
-            right=data.to;
-            Vis02TutorialFunction(dataset,true);
-        }
-	});
 	// PARA A ETAPA DE TUTORIAL CORRIGE O PROBLEMA DO TAMANHO DO MAPA POR CONTA DAS ANIMAÇÕES E INICIA OS MAPAS.
 	$('.bs-stepper')[0].addEventListener('shown.bs-stepper', function (event) {
 		if(event.detail.indexStep==5){
 			mapVis02.invalidateSize();
-			opcoes=[];
-		  	//opcoes=['Recife','Caruaru'];
-    		Vis02TutorialFunction(dataset,true);
+    		Vis02TutorialFunction();
+    		buildSlider();
+    		Vis02TutorialFunction();
+    		bring_front(mapVis02);
     	}
-	});
-	// PARA A ETAPA DE PERGUNTAS CORRIGE O PROBLEMA DO TAMANHO DO MAPA POR CONTA DAS ANIMAÇÕES E INICIA OS MAPAS QUANDO UMA TAB MUDA.
-    $("a[href='#pills-profile']").on('shown.bs.tab', function(e) {
-	    var id= $('#2Form > div.active > div > div > div > div>').siblings()[0].id;
-	    var base=id.substring(3,4);
-		id=id.substring(0, 4);
-		var p=findP(novodataset,id);
-		p=p.highlights;
-		opcoes=[];
-		p.forEach(function(d,i){
-		    opcoes.push(d);
-		});
-		if(base=='C'){
-			$('#chuvaview').show();
-			$('#taxiview').hide();
-	    	mapRange.invalidateSize();
-			inicioRange(dataset);
-		}else if(base=='T'){
-			$('#taxiview').show();
-			$('#chuvaview').hide();
-			mapVistaxi.invalidateSize();
-			inicioTaxi(datasettaxi);
-		}
 	});
 	// VALIDA AS RESPOSTAS DOS FORMS, DESTACA AS ÁREAS PERGUNTADAS E SETA OS VALORES DE TEMPO E CLICK PARA CADA PERGUNTA.
 	$(".btn-next-form").click(function() {
@@ -302,35 +128,21 @@ $(document).ready(function () {
 			}else if($('#'+entid).val()==undefined && $('#'+entid).children().length>0){
 				$(this).parent().parent()[0].classList.add('was-validated');
 			}else{
-			   	var formName=$(this).parent().parent()[0].id;
 			   	opcoes=[];
-				if(formName=='2Form'){
 			   		stepper2.next();
-			   		selecionadosC=[];
-			   		selecionadosT=[];
 			   		$(this).parent().parent().removeClass("was-validated");
 			   		var id= $(this).parent().next().find('div >div > div> ').siblings()[0].id;
-			   		var base=id.substring(3,4);
-					id=id.substring(0, 4);
-					var p=findP(novodataset,id);
-			    	p=p.highlights;
-			    	p.forEach(function(d,i){
-			    		opcoes.push(d);
-			    	});
-					if(base=='C'){
-						$('#chuvaview').show();
-						$('#taxiview').hide();
-				    	mapRange.invalidateSize();
-						inicioRange(dataset);
-						$('#sliderc').removeClass("disabledslider");
-					}else if(base=='T'){
-						$('#taxiview').show();
-						$('#chuvaview').hide();
-						mapVistaxi.invalidateSize();
-						inicioTaxi(datasettaxi);
-						$('#slidertx').removeClass("disabledslider");
-					}
-			   	}
+			   		//debugger
+			   		proxima_view(id);
+			   		Start_Update_data();
+			    	setTimeout(function(){
+			    		maior=0;menor=+Infinity;			    		
+			    		VisPerguntas();
+				    	updateSliderPerguntas();
+				    	VisPerguntas();
+				    	bring_front(mapVisPerguntas);
+				    	mapVisPerguntas.invalidateSize();
+			    	},400);
 				$(this).parent().find('.form-group > div >.clicks')[0].value = clicks;
 				d2 = new Date();
 				diff = Math.abs(d1-d2)/1000;
@@ -356,32 +168,21 @@ $(document).ready(function () {
 				$('#tutorial').css('display','none');
 	    		$('#vis').css('display','');
 				if($('#2Form').is(':visible')){
-					mapRange.invalidateSize();
-					mapVistaxi.invalidateSize();
-					var id= $('#2Form > div.active > div > div > div > div>').siblings()[0].id;
-				   	var base=id.substring(3,4);
-					id=id.substring(0, 4);
-				    var p=findP(novodataset,id);
-			    	p=p.highlights;
-				    opcoes=[];
-				    p.forEach(function(d,i){
-				    	opcoes.push(d);
-				    });
-					if(base=='C'){
-						left=80;
-						right=400;
-						$('#chuvaview').show();
-						$('#taxiview').hide();
-				    	mapRange.invalidateSize();
-						inicioRange(dataset);
-					}else if(base=='T'){
-						leftTaxi=22000;
-						rightTaxi=36000;
-						$('#taxiview').show();
-						$('#chuvaview').hide();
-						mapVistaxi.invalidateSize();
-						inicioTaxi(datasettaxi);
-					}
+					var id= $('#2Form > div.active > div > div > input')[0].id.substring(4,6);
+					//var id= $('#2Form > div.active > div > div > input')[0].id.substring(4,6);
+					//debugger
+			   		proxima_view(id);
+			   		Start_Update_data();
+			    	setTimeout(function(){
+			    		maior=0;menor=+Infinity;
+			    		VisPerguntas();
+				    	updateSliderPerguntas();
+				    	mapVisPerguntas.invalidateSize();
+			    	},400);
+			    	setTimeout(function(){
+			    		VisPerguntas();
+				    	bring_front(mapVisPerguntas);
+			    	},600);
 				}
 			}else{
 				stepper0.next();
