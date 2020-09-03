@@ -67,7 +67,7 @@ d3.json("./data/perguntas.json",function(error,data){
 
 $(document).ready(function () {
 	//PREENCHE TODAS AS PERGUNTAS.
-	//arr=shuffle(arr);
+	arr=shuffle(arr);
 	arr.forEach(function(d,i){
 		d4= geraperguntas(novodataset,d,3);
 		list = document.getElementById((i+1)+"p");
@@ -178,11 +178,11 @@ $(document).ready(function () {
 			    		VisPerguntas();
 				    	updateSliderPerguntas();
 				    	mapVisPerguntas.invalidateSize();
-			    	},400);
+			    	},600);
 			    	setTimeout(function(){
 			    		VisPerguntas();
 				    	bring_front(mapVisPerguntas);
-			    	},750);
+			    	},700);
 				}
 			}else{
 				stepper0.next();
