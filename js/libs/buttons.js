@@ -115,7 +115,19 @@ $(document).ready(function () {
     		Vis02TutorialFunction();
     		bring_front(mapVis02);
     	}
+    	if(event.detail.indexStep==6){
+    		//console.log(event.detail.from);
+	    	if($('#pergunta_text')[0].checkValidity()==false || $('#pergunta_text')[0].value>60 || $('#pergunta_text')[0].value<40){
+	    		$('#pergunta_text')[0].value="";
+				$('#FormTeste')[0].classList.add("was-validated");
+				stepper0.to(6);
+			}else{
+				$('#FormTeste').removeClass("was-validated");
+			}
+    	}
 	});
+	function validar_teste(){
+	}
 	// VALIDA AS RESPOSTAS DOS FORMS, DESTACA AS ÁREAS PERGUNTADAS E SETA OS VALORES DE TEMPO E CLICK PARA CADA PERGUNTA.
 	$(".btn-next-form").click(function() {
 		if($(this).hasClass('tutorial')==false){
