@@ -182,7 +182,7 @@ $(document).ready(function () {
 			    	setTimeout(function(){
 			    		VisPerguntas();
 				    	bring_front(mapVisPerguntas);
-			    	},600);
+			    	},750);
 				}
 			}else{
 				stepper0.next();

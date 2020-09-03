@@ -319,7 +319,7 @@ function compare(dataset){
           }else{
             var total=1-probab;
           }
-        layer.bindPopup(""+feature.properties.id+": "+Math.round(total*100)+"%");
+        layer.bindPopup(""+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClicked
         });
@@ -419,7 +419,7 @@ function compare_Perguntas(dataset){
           }else{
             var total=1-probab;
           }
-        layer.bindPopup(""+feature.properties.id+": "+Math.round(total*100)+"%");
+        layer.bindPopup(""+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClicked_Perguntas
         });

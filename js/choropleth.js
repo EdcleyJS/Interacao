@@ -23,7 +23,7 @@ var distribution,distribution_data;
 function Start_Update_data(){
   if(!polyfile) {
     polyfile = "./data/polygons.geojson";
-    console.log("vazio");
+    //console.log("vazio");
   }else{
     polyfile = polygon;
   }
@@ -44,12 +44,12 @@ function Start_Update_data(){
 }
 //-------------------
 //-- DIV INFO DO MAPA CONTROLADO -- 
-/*var infoVis02=L.control();
+var infoVis02=L.control();
 infoVis02.onAdd = function (mymap) {
   this._div = L.DomUtil.create('div', 'info');
   this.update();
   return this._div;
-};*/
+};
 //-- DIV LEGENDA DO MAPA CONTROLADO --
 var legendVis02 = L.control({position: 'bottomright'});
 legendVis02.onAdd = function (map) {
@@ -90,13 +90,29 @@ function Vis02TutorialFunction(){
               fillOpacity: 0.9,
               color: '#e66101'
             };
-          }else{
+          }else if(feature.properties.id==1){
             return {
               weight: 3.5,
               opacity: 1,
               fillColor: "#"+colorR(prob),
               fillOpacity: 0.9,
               color: '#d01c8b'
+            };
+          }else if(feature.properties.id==48){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(prob),
+              fillOpacity: 0.9,
+              color: '#dfc27d'
+            };
+          }else if(feature.properties.id==16){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(prob),
+              fillOpacity: 0.9,
+              color: '#2d004b'
             };
           }
         }else{
@@ -132,11 +148,11 @@ function Vis02TutorialFunction(){
           });
       }
   }).addTo(mapVis02);
-  /*infoVis02.update = function (props) {
+  infoVis02.update = function (props) {
       this._div.innerHTML= infoprops(props);
   };
 
-    infoVis02.addTo(mapVis02);*/
+    infoVis02.addTo(mapVis02);
 
     //
   //console.log("ok");
