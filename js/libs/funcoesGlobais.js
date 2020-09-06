@@ -241,73 +241,109 @@ function whenClicked_Perguntas(e) {
 }
 var size,distance,variance_large,variance_small;
 function compare(dataset){
-  var probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(dataset[1].properties.id,distribution_data));
   infoVis02.remove();
   if(layerTuto2!= null){
       layerTuto2.clearLayers();
   }
-  layerTuto2 =L.geoJson(dataset,
+  var probab;
+  layerTuto2 =L.geoJson(geodata,
     {style: function(feature){
+      //debugger;
+        probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
+        if(dataset[0].properties.id==feature.properties.id){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
         if(opcoes.includes(feature.properties.id)){
           if(opcoes[0]==feature.properties.id){
             if(dataset[0].properties.id==feature.properties.id){
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(probab),
+                fillColor: "black",
                 dashArray: '3',
-                fillOpacity: 0.9,
+                fillOpacity: 1.0,
                 color: '#c51b7d'
               };
             }else{
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(1-probab),
+                fillColor: "#"+colorR(probab),
                 dashArray: '3',
                 fillOpacity: 0.9,
                 color: '#c51b7d'
               };            
             }
-
           }else if(opcoes[1]==feature.properties.id){
             if(dataset[0].properties.id==feature.properties.id){
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(probab),
+                fillColor: "black",
                 dashArray: '3',
-                fillOpacity: 0.9,
+                fillOpacity: 1.0,
                 color: '#053061'
               };
             }else{
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(1-probab),
+                fillColor: "#"+colorR(probab),
                 dashArray: '3',
                 fillOpacity: 0.9,
                 color: '#053061'
               };            
             }           
           }
-
         }else{
           if(dataset[0].properties.id==feature.properties.id){
             return {
               weight: 3.5,
               opacity: 1,
-              fillColor: "#"+colorR(probab),
+              fillColor: "black",
               dashArray: '3',
-              fillOpacity: 0.9,
+              fillOpacity: 1.0,
               color: 'black'
             };
-          }else{
+          }else if(feature.properties.id==0){
             return {
               weight: 3.5,
               opacity: 1,
-              fillColor: "#"+colorR(1-probab),
-              dashArray: '3',
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#e66101'
+            };
+          }else if(feature.properties.id==1){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#d01c8b'
+            };
+          }else if(feature.properties.id==48){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#dfc27d'
+            };
+          }else if(feature.properties.id==16){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#2d004b'
+            };
+          }else{
+            return {
+              weight: 0.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
               fillOpacity: 0.9,
               color: 'black'
             };            
@@ -316,12 +352,14 @@ function compare(dataset){
     },
       onEachFeature: function (feature,layer) {
         //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
+          probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
             var total=probab;
+            layer.bindPopup(" escolhida para comparar");
           }else{
             var total=1-probab;
+            layer.bindPopup(""+Math.round(total*100)+"%");
           }
-        layer.bindPopup(""+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClicked
         });
@@ -341,73 +379,93 @@ function compare(dataset){
   infoVis02.addTo(mapVis02);
 }
 function compare_Perguntas(dataset){
-  var probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(dataset[1].properties.id,distribution_data));
   infoVisPerguntas.remove();
   if(layerPerguntas!= null){
       layerPerguntas.clearLayers();
   }
-  layerPerguntas =L.geoJson(dataset,
+  var probab;
+  layerPerguntas =L.geoJson(geodata,
     {style: function(feature){
+      //debugger;
+        probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
+        if(dataset[0].properties.id==feature.properties.id){
+          probab=probab;
+        }else{
+          probab=1-probab;
+        }
         if(opcoes.includes(feature.properties.id)){
           if(opcoes[0]==feature.properties.id){
             if(dataset[0].properties.id==feature.properties.id){
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(probab),
+                fillColor: "black",
                 dashArray: '3',
-                fillOpacity: 0.9,
+                fillOpacity: 1.0,
                 color: '#c51b7d'
               };
             }else{
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(1-probab),
+                fillColor: "#"+colorR(probab),
                 dashArray: '3',
                 fillOpacity: 0.9,
                 color: '#c51b7d'
               };            
             }
-
           }else if(opcoes[1]==feature.properties.id){
             if(dataset[0].properties.id==feature.properties.id){
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(probab),
+                fillColor: "black",
                 dashArray: '3',
-                fillOpacity: 0.9,
+                fillOpacity: 1.0,
                 color: '#053061'
               };
             }else{
               return {
                 weight: 3.5,
                 opacity: 1,
-                fillColor: "#"+colorR(1-probab),
+                fillColor: "#"+colorR(probab),
                 dashArray: '3',
                 fillOpacity: 0.9,
                 color: '#053061'
               };            
             }           
           }
-
         }else{
           if(dataset[0].properties.id==feature.properties.id){
             return {
               weight: 3.5,
               opacity: 1,
-              fillColor: "#"+colorR(probab),
+              fillColor: "black",
               dashArray: '3',
-              fillOpacity: 0.9,
+              fillOpacity: 1.0,
               color: 'black'
             };
-          }else{
+          }else if(feature.properties.id==0){
             return {
               weight: 3.5,
               opacity: 1,
-              fillColor: "#"+colorR(1-probab),
-              dashArray: '3',
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#e66101'
+            };
+          }else if(feature.properties.id==1){
+            return {
+              weight: 3.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
+              fillOpacity: 0.9,
+              color: '#d01c8b'
+            };
+          }else{
+            return {
+              weight: 0.5,
+              opacity: 1,
+              fillColor: "#"+colorR(probab),
               fillOpacity: 0.9,
               color: 'black'
             };            
@@ -416,12 +474,14 @@ function compare_Perguntas(dataset){
     },
       onEachFeature: function (feature,layer) {
         //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
+          probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
             var total=probab;
+            layer.bindPopup(" escolhida para comparar");
           }else{
             var total=1-probab;
+            layer.bindPopup(""+Math.round(total*100)+"%");
           }
-        layer.bindPopup(""+Math.round(total*100)+"%");
         layer.on({
           dblclick: whenClicked_Perguntas
         });
@@ -439,6 +499,7 @@ function compare_Perguntas(dataset){
       this._div.innerHTML= infoprops(props);
   };
   infoVisPerguntas.addTo(mapVisPerguntas);
+
 }
 function comparando_Perguntas(e){
   //console.log(e);
@@ -448,21 +509,22 @@ function comparando_Perguntas(e){
         exists=true;
       }
     });
-    if(exists==false && selecionados.length<3){
+    if(selecionados_Perguntas.length<1){
       var layer = e.target;
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
       }
       selecionados_Perguntas.push(e);
-      if(selecionados_Perguntas.length==2){
+      if(selecionados_Perguntas.length==1){
         layerPerguntas.clearLayers();
         var newdata=[];
         selecionados_Perguntas.forEach(function(d,i){
           newdata.push(d.target.feature);
         });
         compare_Perguntas(newdata);
+        bring_front(mapVisPerguntas);
       }
-    }else if(exists==true && selecionados_Perguntas.length>0){
+    }else if(selecionados_Perguntas.length>0){
       selecionados_Perguntas=[];
       $('#div_slider_Perguntas').removeClass("disabledslider");
       VisPerguntas();
@@ -481,21 +543,22 @@ function comparando(e){
         exists=true;
       }
     });
-    if(exists==false && selecionados.length<3){
+    if(selecionados.length<1){
       var layer = e.target;
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
       }
       selecionados.push(e);
-      if(selecionados.length==2){
+      if(selecionados.length==1){
         layerTuto2.clearLayers();
         var newdata=[];
         selecionados.forEach(function(d,i){
           newdata.push(d.target.feature);
         });
         compare(newdata);
+        bring_front(mapVis02);
       }
-    }else if(exists==true && selecionados.length>0){
+    }else if(selecionados.length>0){
       selecionados=[];
       $('#slidert').removeClass("disabledslider");
       Vis02TutorialFunction(geodata,true);
