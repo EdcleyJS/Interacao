@@ -355,21 +355,17 @@ function compare(dataset){
           probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
             var total=probab;
-            layer.bindPopup(" escolhida para comparar");
           }else{
             var total=1-probab;
-            layer.bindPopup(""+Math.round(total*100)+"%");
           }
         layer.on({
           dblclick: whenClicked
         });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
-            this.openPopup();
         });
         layer.on('mouseout', function (e) {
             layerTuto2.resetStyle(e.target);
-            this.closePopup();
         });
       }
   }).addTo(mapVis02);
@@ -477,21 +473,17 @@ function compare_Perguntas(dataset){
           probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
             var total=probab;
-            layer.bindPopup(" escolhida para comparar");
           }else{
             var total=1-probab;
-            layer.bindPopup(""+Math.round(total*100)+"%");
           }
         layer.on({
           dblclick: whenClicked_Perguntas
         });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
-            this.openPopup();
         });
         layer.on('mouseout', function (e) {
             layerPerguntas.resetStyle(e.target);
-            this.closePopup();
         });
       }
   }).addTo(mapVisPerguntas);

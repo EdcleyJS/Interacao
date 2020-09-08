@@ -4,10 +4,18 @@ var mapVisPerguntas = L.map('visPerguntas',{zoomControl: false,preferCanvas: tru
 
 var gradesR=[0,0.12,0.24,0.36,0.48,0.60,0.72,0.84,1];
 var databasetaxi,datasettaxi;
+mapVis02.dragging.disable();
+mapVis02.touchZoom.disable();
 mapVis02.doubleClickZoom.disable();
 mapVis02.scrollWheelZoom.disable();
+mapVis02.boxZoom.disable();
+mapVis02.keyboard.disable();
+mapVisPerguntas.dragging.disable();
+mapVisPerguntas.touchZoom.disable();
 mapVisPerguntas.doubleClickZoom.disable();
 mapVisPerguntas.scrollWheelZoom.disable();
+mapVisPerguntas.boxZoom.disable();
+mapVisPerguntas.keyboard.disable();
 
 var bounds = [[0,0], [1000,1000]];
 var geodata;
@@ -133,11 +141,9 @@ function Vis02TutorialFunction(){
           });
           layer.on('mouseover', function (e) {
               highlightFeature(e);
-              this.openPopup();
           });
           layer.on('mouseout', function (e) {
               layerTuto2.resetStyle(e.target);
-              this.closePopup();
               if(selecionados.filter(function(el) { return el.target.feature.properties.id === e.target.feature.properties.id; }).length>0){
                 layer.setStyle({
                     weight: 3.5,
@@ -227,11 +233,9 @@ function VisPerguntas(){
           });
           layer.on('mouseover', function (e) {
               highlightFeature(e);
-              this.openPopup();
           });
           layer.on('mouseout', function (e) {
               layerPerguntas.resetStyle(e.target);
-              this.closePopup();
               if(selecionados_Perguntas.filter(function(el) { return el.target.feature.properties.id === e.target.feature.properties.id; }).length>0){
                 layer.setStyle({
                     weight: 3.5,
