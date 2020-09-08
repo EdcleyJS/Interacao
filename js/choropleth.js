@@ -141,9 +141,11 @@ function Vis02TutorialFunction(){
           });
           layer.on('mouseover', function (e) {
               highlightFeature(e);
+	      this.openPopup();
           });
           layer.on('mouseout', function (e) {
               layerTuto2.resetStyle(e.target);
+	      this.closePopup();
               if(selecionados.filter(function(el) { return el.target.feature.properties.id === e.target.feature.properties.id; }).length>0){
                 layer.setStyle({
                     weight: 3.5,
@@ -233,9 +235,11 @@ function VisPerguntas(){
           });
           layer.on('mouseover', function (e) {
               highlightFeature(e);
+	      this.openPopup();
           });
           layer.on('mouseout', function (e) {
               layerPerguntas.resetStyle(e.target);
+	      this.closePopup();
               if(selecionados_Perguntas.filter(function(el) { return el.target.feature.properties.id === e.target.feature.properties.id; }).length>0){
                 layer.setStyle({
                     weight: 3.5,
