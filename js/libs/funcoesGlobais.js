@@ -354,18 +354,22 @@ function compare(dataset){
         //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
           probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
-            var total=probab;
+              var total=probab;
+	      layer.bindPopup(" escolhida para comparar");
           }else{
-            var total=1-probab;
+              var total=1-probab;
+	      layer.bindPopup(""+Math.round(total*100)+"%");
           }
         layer.on({
           dblclick: whenClicked
         });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
+	    this.openPopup();
         });
         layer.on('mouseout', function (e) {
             layerTuto2.resetStyle(e.target);
+	    this.closePopup();
         });
       }
   }).addTo(mapVis02);
@@ -385,9 +389,9 @@ function compare_Perguntas(dataset){
       //debugger;
         probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
         if(dataset[0].properties.id==feature.properties.id){
-          probab=probab;
+            probab=probab;
         }else{
-          probab=1-probab;
+            probab=1-probab;
         }
         if(opcoes.includes(feature.properties.id)){
           if(opcoes[0]==feature.properties.id){
@@ -472,18 +476,22 @@ function compare_Perguntas(dataset){
         //Criação do Popup de cada feature/polígono contendo o nome do proprietário e o cep de localização do edíficio/lote.
           probab= cmp(distribuicaoSin(dataset[0].properties.id,distribution_data),distribuicaoSin(feature.properties.id,distribution_data));
           if(dataset[0].properties.id==feature.properties.id){
-            var total=probab;
+              var total=probab;
+	      layer.bindPopup(" escolhida para comparar");
           }else{
-            var total=1-probab;
+              var total=1-probab;
+	      layer.bindPopup(""+Math.round(total*100)+"%");
           }
         layer.on({
           dblclick: whenClicked_Perguntas
         });
         layer.on('mouseover', function (e) {
             highlightFeature(e);
+	    this.openPopup();
         });
         layer.on('mouseout', function (e) {
             layerPerguntas.resetStyle(e.target);
+	    this.closePopup();
         });
       }
   }).addTo(mapVisPerguntas);
