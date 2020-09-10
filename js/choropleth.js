@@ -2,6 +2,9 @@ var filterbymouth,filterbytri,alpha=0,left=200,right=500,leftTaxi=22000,rightTax
 var mapVis02 = L.map('vis02',{zoomControl: false,preferCanvas: true,attributionControl: false,crs: L.CRS.Simple}).setView([0.203125,0.6640625], 6);
 var mapVisPerguntas = L.map('visPerguntas',{zoomControl: false,preferCanvas: true,attributionControl: false,crs: L.CRS.Simple}).setView([0.203125,0.6640625], 6);
 
+mapVis02.dragging.disable();
+mapVisPerguntas.dragging.disable();
+
 var gradesR=[0,0.12,0.24,0.36,0.48,0.60,0.72,0.84,1];
 var databasetaxi,datasettaxi;
 mapVis02.dragging.disable();
